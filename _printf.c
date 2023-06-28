@@ -12,7 +12,7 @@
 int _printf(const char *format, ...)
 {
 	int (*pfunc)(va_list, flags_t *);
-	const char *p;
+	const char *c;
 	va_list args;
 	flags_t flags = {0, 0, 0};
 
@@ -23,24 +23,24 @@ int _printf(const char *format, ...)
 		return (-1);
 	if (format[0] == '%' && format[1] == ' ' && !format[2])
 		return (-1);
-	for (p = format; *p; p++)
+	for (c = format; *c; c++)
 	{
-		if (*p == '%')
+		if (*c == '%')
 		{
-			p++;
-			if (*p == '%')
+			c++;
+			if (*c == '%')
 			{
 				count += _putchar('%');
 				continue;
 			}
-			while (get_flag(*p, &flags))
-				p++;
-			pfunc = get_print(*p);
+			while (get_flag(*c, &flags))
+				c++;
+			pfunc = get_print(*c);
 			count += (pfunc)
 				? pfunc(args, &flags)
-				: _printf("%%%c", *p);
+				: _printf("%%%c", *c);
 		} else
-			count += _putchar(*p);
+			count += _putchar(*c);
 	}
 	_putchar(-1);
 	va_end(args);
